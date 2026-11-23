@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111210">
+<title>Huviringid | Leia oma ring</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: light;
+  --ink: #202b2a;
+  --muted: #64716d;
+  --paper: #f6f5f0;
+  --line: #d9ded8;
+  --green: #176b58;
+  --green-dark: #10513f;
+  --coral: #c85e43;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--ink);
+  background: var(--paper);
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  line-height: 1.5;
+}
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+.leht { width: min(100% - 40px, 1040px); margin: 0 auto; }
+.pais { padding: 48px 0 34px; border-bottom: 1px solid var(--line); }
+.ylemine { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+.mark { color: var(--green); font-weight: 800; letter-spacing: .04em; }
+.pais h1 { max-width: 650px; margin: 48px 0 12px; font-family: Georgia, serif; font-size: clamp(2.5rem, 7vw, 5rem); font-weight: 400; line-height: 1.02; }
+.pais p { max-width: 540px; margin: 0; color: var(--muted); font-size: 1.1rem; }
+.nupp { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; padding: 10px 17px; border: 1px solid var(--green); border-radius: 4px; background: var(--green); color: white; text-decoration: none; font-weight: 700; transition: background .16s ease, transform .16s ease; }
+.nupp:hover { background: var(--green-dark); transform: translateY(-1px); }
+.nupp:focus-visible, input:focus-visible, select:focus-visible, dialog button:focus-visible { outline: 3px solid #e8a65b; outline-offset: 3px; }
+.nupp.teisejarguline { background: transparent; color: var(--green); }
+.nupp.teisejarguline:hover { background: #e6eee8; }
+main { padding: 34px 0 64px; }
+.jaotis-pea { display: flex; align-items: end; justify-content: space-between; gap: 18px; margin-bottom: 20px; }
+.jaotis-pea h2, .vorm h2 { margin: 0; font-family: Georgia, serif; font-size: 2rem; font-weight: 400; }
+.jaotis-pea p { margin: 5px 0 0; color: var(--muted); }
+.ringid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.kaart { display: flex; min-height: 260px; flex-direction: column; align-items: flex-start; padding: 22px; border: 1px solid var(--line); border-top: 4px solid var(--accent, var(--green)); background: #fff; }
+.silt { color: var(--accent, var(--green)); font-size: .78rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+.kaart h3 { margin: 22px 0 5px; font-family: Georgia, serif; font-size: 1.5rem; font-weight: 400; }
+.kaart p { margin: 0 0 20px; color: var(--muted); }
+.kaart .nupp { margin-top: auto; }
+.tyhi { grid-column: 1 / -1; padding: 22px 0; color: var(--muted); }
+.vorm { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; padding-top: 34px; border-top: 1px solid var(--line); }
+.vorm-pea, .teade { grid-column: 1 / -1; }
+.vorm-pea p, .jalus { color: var(--muted); }
+.vorm-pea p { margin: 5px 0 0; }
+.vali { display: grid; gap: 7px; color: var(--ink); font-weight: 700; }
+.vali input, .vali select { width: 100%; min-height: 46px; padding: 10px 12px; border: 1px solid #aeb9b1; border-radius: 3px; background: white; color: var(--ink); }
+.nupp-rida { display: flex; align-items: end; }
+.teade { min-height: 24px; margin: 0; color: var(--green-dark); font-weight: 700; }
+.jalus { padding: 18px 0 30px; border-top: 1px solid var(--line); font-size: .9rem; }
+dialog { width: min(500px, calc(100% - 32px)); padding: 28px; border: 1px solid var(--line); border-top: 4px solid var(--coral); background: var(--paper); color: var(--ink); }
+dialog::backdrop { background: rgb(25 37 33 / 55%); }
+dialog h2 { margin: 10px 0; font-family: Georgia, serif; font-size: 2rem; font-weight: 400; }
+dialog p { color: var(--muted); }
+.dialog-nupud { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+@media (max-width: 720px) {
+  .leht { width: min(100% - 28px, 560px); }
+  .pais { padding-top: 24px; }
+  .pais h1 { margin-top: 40px; }
+  .ringid { grid-template-columns: 1fr; }
+  .kaart { min-height: 220px; }
+}
+@media (max-height: 700px) and (min-width: 521px) {
+  .hero { min-height: 80svh; }
+  .hero__content { padding: 108px 0 32px; }
+  .hero h1 { font-size: 5rem; }
+  .hero__bottom { margin-top: 20px; }
+}
+@media (max-width: 520px) {
+  .ylemine { align-items: flex-start; }
+  .ylemine .nupp { padding-inline: 11px; }
+  .jaotis-pea { align-items: flex-start; flex-direction: column; }
+  .vorm { grid-template-columns: 1fr; }
+  .vorm-pea, .teade { grid-column: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}
+:root { color-scheme: light; --ink: #111210; --paper: #eeeee7; --muted: #777a72; --line: #c9cac2; --acid: #ddff39; --orange: #ff6a45; }
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 20px; }
+body { margin: 0; padding: 0; color: var(--ink); background: var(--paper); font-family: "Space Grotesk", "Segoe UI", sans-serif; line-height: 1.5; }
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+.konteiner { width: min(100% - 64px, 1480px); margin-inline: auto; }
+.mono, .mark, .meta, .number, .tag, .eyebrow { font-family: "DM Mono", monospace; text-transform: uppercase; }
+.hero { position: relative; display: flex; min-height: 780px; min-height: 92svh; align-items: flex-end; overflow: hidden; margin: 0; padding: 0; border: 0; border-radius: 0; background: #171815; color: white; }
+.hero__image, .hero__shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hero__image { object-fit: cover; object-position: center 45%; opacity: .18; filter: grayscale(1) contrast(.8); animation: hero-arrive 1.2s cubic-bezier(.2,.7,.2,1) both; }
+.hero__shade { background: linear-gradient(90deg, rgb(10 11 10 / 92%), rgb(10 11 10 / 86%) 53%, rgb(10 11 10 / 74%)), linear-gradient(0deg, rgb(10 11 10 / 35%), transparent 48%); }
+.topbar { position: absolute; z-index: 3; inset: 0 0 auto; display: flex; width: min(100% - 64px, 1480px); height: 82px; align-items: center; justify-content: space-between; margin: auto; color: white; }
+.mark { color: white; font-size: .88rem; font-weight: 500; letter-spacing: .08em; text-decoration: none; }
+.nav { display: flex; align-items: center; gap: 30px; }
+.nav a { color: white; font-family: "DM Mono", monospace; font-size: .74rem; text-decoration: none; text-transform: uppercase; transition: color .2s ease; }
+.nav a:hover { color: var(--acid); }
+.nav .nav__cta { display: inline-flex; min-height: 40px; align-items: center; padding: 0 14px; border: 1px solid rgb(255 255 255 / 50%); transition: color .2s ease, background .2s ease, border-color .2s ease; }
+.nav .nav__cta:hover { border-color: var(--acid); background: var(--acid); color: var(--ink); }
+.hero__content { position: relative; z-index: 1; width: min(100% - 64px, 1480px); margin: 0 auto; padding: 150px 0 58px; animation: copy-arrive .8s .15s both; }
+.eyebrow { display: flex; align-items: center; gap: 11px; margin: 0 0 20px; color: #777a72; font-size: .74rem; letter-spacing: .1em; }
+.hero .eyebrow { color: var(--acid); }
+.eyebrow::before { width: 24px; height: 1px; background: currentColor; content: ""; }
+.hero h1 { max-width: 100%; margin: 0 0 10px -.06em; color: var(--acid); font-size: 14rem; font-weight: 700; line-height: .82; letter-spacing: -.085em; white-space: nowrap; text-shadow: 0 0 70px rgb(221 255 57 / 12%); }
+.hero h1 span { color: white; }
+.hero__bottom { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-top: 34px; }
+.hero__bottom p { max-width: 390px; margin: 0; color: rgb(255 255 255 / 82%); font-size: 1.05rem; }
+.hero__link { display: inline-flex; align-items: center; gap: 14px; color: white; font-family: "DM Mono", monospace; font-size: .75rem; text-decoration: none; text-transform: uppercase; }
+.hero__link span { display: grid; width: 42px; aspect-ratio: 1; place-items: center; border: 1px solid rgb(255 255 255 / 70%); border-radius: 50%; color: var(--acid); font-size: 1.1rem; transition: color .2s ease, background .2s ease, transform .2s ease; }
+.hero__link:hover span { transform: translateY(3px); background: var(--acid); color: var(--ink); }
+.ticker { overflow: hidden; border-bottom: 1px solid var(--line); background: var(--acid); color: var(--ink); }
+.ticker__track { display: flex; width: max-content; animation: ticker 28s linear infinite; }
+.ticker__group { display: flex; align-items: center; gap: 26px; padding: 13px 13px 13px 0; white-space: nowrap; }
+.ticker__group span { font-family: "DM Mono", monospace; font-size: .75rem; text-transform: uppercase; }
+.ticker__group b { color: var(--orange); font-size: 1.1rem; }
+.section { padding: 100px 0 110px; }
+.section__top { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 34px; }
+.section__top h2, .form__title { margin: 0; font-size: 4.5rem; font-weight: 500; line-height: .95; letter-spacing: -.055em; }
+.section__top p { max-width: 280px; margin: 0; color: var(--muted); }
+.section__count { color: var(--muted); font-size: .7rem; }
+.ringid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.kaart { display: block; width: 100%; min-width: 0; min-height: 0; margin: 0; padding: 0; border: 0; border-radius: 0; background: transparent; animation: none; }
+.kaart:hover { transform: none; }
+.kaart__foto { position: relative; display: block; width: 100%; aspect-ratio: 1.02; margin: 0; overflow: hidden; background: #252621; }
+.kaart__foto::after { position: absolute; inset: 0; background: linear-gradient(0deg, rgb(0 0 0 / 58%), transparent 55%); content: ""; opacity: .88; pointer-events: none; transition: opacity .65s ease; }
+.kaart__foto img { display: block; width: 100%; height: 100%; object-fit: cover; filter: saturate(.78); transform: translate(var(--move-x, 0), var(--move-y, 0)) scale(1); transform-origin: center; backface-visibility: hidden; will-change: transform; transition: filter .7s ease, transform 1s cubic-bezier(.16,1,.3,1); }
+.kaart:hover .kaart__foto img, .kaart:focus-within .kaart__foto img { filter: saturate(1.18) contrast(1.03); transform: translate(var(--move-x, 0), var(--move-y, 0)) scale(1.15) rotate(-1deg); }
+.kaart:hover .kaart__foto::after, .kaart:focus-within .kaart__foto::after { opacity: .42; }
+.kaart:active .kaart__foto img { transform: translate(var(--move-x, 0), var(--move-y, 0)) scale(1.07); }
+.number { position: absolute; z-index: 1; top: 16px; left: 18px; color: white; font-size: .74rem; }
+.tag { position: absolute; z-index: 1; right: 16px; bottom: 17px; color: white; font-size: .68rem; }
+.kaart__info { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; padding: 17px 0 0; border-top: 1px solid var(--line); }
+.kaart__info h3 { margin: 0; font-size: 1.55rem; font-weight: 500; letter-spacing: -.04em; }
+.kaart__info p { margin: 4px 0 0; color: var(--muted); font-size: .88rem; }
+.nupp { display: inline-flex; min-height: 42px; flex: 0 0 auto; align-items: center; justify-content: center; gap: 10px; padding: 0 13px; border: 1px solid var(--ink); border-radius: 0; background: transparent; color: var(--ink); font-family: "DM Mono", monospace; font-size: .68rem; text-decoration: none; text-transform: uppercase; transition: color .2s ease, background .2s ease, border-color .2s ease; }
+.nupp:hover { border-color: var(--ink); background: var(--ink); color: white; }
+.nupp--bright { border-color: var(--acid); background: var(--acid); color: var(--ink); }
+.nupp--bright:hover { border-color: white; background: white; color: var(--ink); }
+.nupp:focus-visible, input:focus-visible, select:focus-visible, dialog button:focus-visible, a:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+.vorm-wrap { padding: 82px 0 90px; background: var(--ink); color: white; }
+.vorm { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 28px; margin: 0; padding: 0; border: 0; border-radius: 0; background: transparent; animation: none; }
+.vorm-pea { grid-column: 1 / -1; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 13px; }
+.vorm-pea p { max-width: 280px; margin: 0 0 6px; color: #b0b1a9; font-size: .9rem; }
+.form__title { max-width: 700px; font-size: 4rem; }
+.form__title span { color: var(--acid); }
+.vali { display: grid; gap: 8px; color: #d3d4cc; font-family: "DM Mono", monospace; font-size: .72rem; text-transform: uppercase; }
+.vali input, .vali select { width: 100%; min-height: 50px; padding: 10px 12px; border: 1px solid #565850; border-radius: 0; background: #20211e; color: white; font-family: "Space Grotesk", sans-serif; font-size: 1rem; text-transform: none; }
+.nupp-rida { display: flex; align-items: flex-end; }
+.teade { grid-column: 1 / -1; min-height: 24px; margin: 0; color: var(--acid); font-size: .9rem; font-weight: 500; }
+.jalus { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 18px 0 22px; color: var(--muted); font-family: "DM Mono", monospace; font-size: .67rem; text-transform: uppercase; }
+.jalus a { color: inherit; text-decoration: none; }
+.jalus a:hover { color: var(--ink); }
+dialog { width: min(560px, calc(100% - 32px)); padding: 32px; border: 1px solid var(--ink); border-top: 1px solid var(--ink); border-radius: 0; background: var(--paper); color: var(--ink); }
+dialog::backdrop { background: rgb(10 11 10 / 78%); backdrop-filter: blur(4px); }
+dialog .silt { padding: 0; border-radius: 0; background: transparent; color: #62645e; font-family: "DM Mono", monospace; font-size: .72rem; text-transform: uppercase; }
+dialog h2 { margin: 15px 0 10px; font-size: 3rem; font-weight: 500; line-height: 1; letter-spacing: -.05em; }
+dialog p { color: #5f625b; }
+.dialog-nupud { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.dialog-nupud .nupp--bright { border-color: var(--ink); background: var(--ink); color: var(--acid); }
+@keyframes ticker { to { transform: translateX(-50%); } }
+@keyframes hero-arrive { from { opacity: .4; transform: scale(1.06); } to { opacity: 1; transform: scale(1); } }
+@keyframes copy-arrive { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 900px) { .hero { min-height: 740px; min-height: 88svh; } .hero h1 { max-width: 760px; font-size: 6rem; } .section__top h2 { font-size: 3.8rem; } .kaart__info { flex-direction: column; } .kaart__info .nupp { align-self: flex-start; } }
+@media (min-width: 901px) and (max-width: 1200px) { .hero h1 { font-size: 10rem; } }
+@media (min-width: 521px) and (max-width: 640px) { .hero h1 { font-size: 4.7rem; } }
+@media (max-width: 520px) {
+  .konteiner, .topbar, .hero__content { width: calc(100% - 36px); }
+  .topbar { height: 68px; }
+  .nav { gap: 12px; }
+  .nav a { font-size: .62rem; }
+  .nav .nav__optional { display: none; }
+  .nav .nav__cta { min-height: 35px; padding-inline: 9px; }
+  .hero { min-height: 690px; min-height: 88svh; }
+  .hero__image { object-position: 58% center; }
+  .hero__shade { background: linear-gradient(0deg, rgb(10 11 10 / 80%), rgb(10 11 10 / 28%) 78%); }
+  .hero__content { padding: 120px 0 35px; }
+  .hero h1 { font-size: 3.8rem; }
+  .hero__bottom { align-items: flex-start; flex-direction: column; gap: 22px; margin-top: 24px; }
+  .hero__bottom p { max-width: 310px; font-size: .95rem; }
+  .section { padding: 66px 0 74px; }
+  .section__top { align-items: flex-start; flex-direction: column; margin-bottom: 24px; }
+  .section__top h2 { font-size: 3.4rem; }
+  .ringid { grid-template-columns: 1fr; gap: 35px; }
+  .kaart__foto { aspect-ratio: 1.1; }
+  .kaart__info { align-items: center; flex-direction: row; }
+  .kaart__info h3 { font-size: 1.3rem; }
+  .kaart__info .nupp { align-self: center; padding-inline: 10px; font-size: .61rem; }
+  .vorm-wrap { padding: 62px 0; }
+  .vorm { grid-template-columns: 1fr; gap: 20px; }
+  .vorm-pea { align-items: flex-start; flex-direction: column; gap: 13px; }
+  .form__title { font-size: 3.2rem; }
+  .jalus { align-items: flex-start; flex-direction: column; }
+}
+@media (max-width: 360px) { .hero h1 { font-size: 3.2rem; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+@media (hover: none) { .kaart__foto img { transform: none; } .kaart__foto:active img { transform: scale(1.06); } }
+</style>
+</head>
+<body>
+<header class="hero" id="algus">
+  <img class="hero__image" src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&amp;fit=crop&amp;w=2200&amp;q=85" alt="Õpilased koos õppimas ja tegutsemas" fetchpriority="high">
+  <div class="hero__shade" aria-hidden="true"></div>
+  <div class="topbar">
+    <a class="mark" href="#algus" aria-label="Huviringid, avaleht">HUVI / RING</a>
+    <nav class="nav" aria-label="Põhinavigatsioon">
+      <a class="nav__optional" href="#ringid">Ringid <span class="section__count">(03)</span></a>
+      <a class="nav__cta" href="#registreeru">Leia oma ring <span aria-hidden="true">↗</span></a>
+    </nav>
+  </div>
+  <div class="hero__content">
+    <p class="eyebrow">Pärast tunde algab kõik</p>
+    <h1>HUVI<span>RING</span></h1>
+    <div class="hero__bottom">
+      <p>Proovi midagi, mida sa veel ei oska. Sinu järgmine lemmiktegevus võib alata ühest teisipäevast.</p>
+      <a class="hero__link" href="#ringid">Avasta ringid <span aria-hidden="true">↓</span></a>
+    </div>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker__track">
+    <div class="ticker__group"><span>Katseta</span><b>✳</b><span>Loo</span><b>✳</b><span>Ehita</span><b>✳</b><span>Esine</span><b>✳</b><span>Sinu aeg. Sinu huvi.</span><b>✳</b></div>
+    <div class="ticker__group"><span>Katseta</span><b>✳</b><span>Loo</span><b>✳</b><span>Ehita</span><b>✳</b><span>Esine</span><b>✳</b><span>Sinu aeg. Sinu huvi.</span><b>✳</b></div>
+  </div>
+</div>
+
+<main>
+  <section class="section konteiner" id="ringid" aria-labelledby="ringide-pealkiri">
+    <div class="section__top">
+      <div>
+        <p class="eyebrow">Vali oma järgmine samm</p>
+        <h2 id="ringide-pealkiri">Kolm võimalust.<br>Üks on sinu.</h2>
+      </div>
+      <p>Vaata, mis toimub pärast viimast tundi. Uued oskused algavad uudishimust.</p>
+    </div>
+    <div class="ringid" id="ringide-loend">
+      <article class="kaart">
+        <figure class="kaart__foto">
+          <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&amp;fit=crop&amp;w=1000&amp;q=80" alt="Kunstniku töölaud ja värvid" loading="lazy">
+          <span class="number">01 / 03</span>
+          <span class="tag">LOOMING</span>
+        </figure>
+        <div class="kaart__info">
+          <div><h3>Kunstiring</h3><p>Teisipäev · 15.00 · ruum 204</p></div>
+          <button class="nupp detaili-nupp" type="button" data-ring="kunst" aria-label="Vaata Kunstiringi lähemalt">Vaata <span aria-hidden="true">↗</span></button>
+        </div>
+      </article>
+      <article class="kaart">
+        <figure class="kaart__foto">
+          <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&amp;fit=crop&amp;w=1000&amp;q=80" alt="Noor tegutseb tehnoloogiaprojekti kallal" loading="lazy">
+          <span class="number">02 / 03</span>
+          <span class="tag">TEHNOLOOGIA</span>
+        </figure>
+        <div class="kaart__info">
+          <div><h3>Robootikaring</h3><p>Kolmapäev · 16.00 · ruum 112</p></div>
+          <button class="nupp detaili-nupp" type="button" data-ring="robootika" aria-label="Vaata Robootikaringi lähemalt">Vaata <span aria-hidden="true">↗</span></button>
+        </div>
+      </article>
+      <article class="kaart">
+        <figure class="kaart__foto">
+          <img src="https://images.unsplash.com/photo-1503095396549-807759245b35?auto=format&amp;fit=crop&amp;w=1000&amp;q=80" alt="Teatrilava prožektorite valguses" loading="lazy">
+          <span class="number">03 / 03</span>
+          <span class="tag">LAVA</span>
+        </figure>
+        <div class="kaart__info">
+          <div><h3>Teatriring</h3><p>Neljapäev · 15.30 · aula</p></div>
+          <button class="nupp detaili-nupp" type="button" data-ring="teater" aria-label="Vaata Teatriringi lähemalt">Vaata <span aria-hidden="true">↗</span></button>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="vorm-wrap" id="registreeru" aria-labelledby="vormi-pealkiri">
+    <div class="konteiner">
+      <form class="vorm" id="registreerimisvorm" aria-labelledby="vormi-pealkiri">
+        <div class="vorm-pea">
+          <div>
+            <p class="eyebrow">Hea asi algab siit</p>
+            <h2 class="form__title" id="vormi-pealkiri">Tule <span>proovima.</span></h2>
+          </div>
+          <p>Avaldus salvestatakse ainult selles brauseris ja seadmes.</p>
+        </div>
+        <label class="vali" for="ring-valik">Vali ring
+          <select id="ring-valik" name="ring" required>
+            <option value="">Vali ring</option>
+            <option value="kunst">Kunstiring</option>
+            <option value="robootika">Robootikaring</option>
+            <option value="teater">Teatriring</option>
+          </select>
+        </label>
+        <label class="vali" for="nimi">Sinu nimi
+          <input id="nimi" name="nimi" autocomplete="name" required maxlength="80" placeholder="Ees- ja perekonnanimi">
+        </label>
+        <label class="vali" for="email">E-posti aadress
+          <input id="email" name="email" type="email" autocomplete="email" required maxlength="254" placeholder="nimi@näide.ee">
+        </label>
+        <div class="nupp-rida">
+          <button class="nupp nupp--bright" type="submit">Saada avaldus <span aria-hidden="true">↗</span></button>
+        </div>
+        <p class="teade" id="teade" role="status"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="jalus konteiner">
+  <a href="#algus">HUVI / RING</a>
+  <span>Tegevus algab uudishimust.</span>
+  <a href="#ringid">Tagasi üles ↑</a>
+</footer>
+
+<dialog id="detailvaade" aria-labelledby="detail-pealkiri">
+  <span class="silt" id="detail-silt"></span>
+  <h2 id="detail-pealkiri"></h2>
+  <p id="detail-kirjeldus"></p>
+  <p id="detail-aeg"></p>
+  <div class="dialog-nupud">
+    <button class="nupp nupp--bright" id="vali-ring" type="button">Vali see ring</button>
+    <button class="nupp teisejarguline" id="sulge-detail" type="button">Sulge</button>
+  </div>
+</dialog>
+
+<script>
+const ringid = {
+  kunst: {
+    nimi: "Kunstiring",
+    silt: "Looming",
+    kirjeldus: "Proovi erinevaid tehnikaid, katseta värvidega ja vii koju enda tehtud töid. Sobib nii alustajale kui ka kogenud joonistajale.",
+    aeg: "Teisipäeval kell 15.00 · ruum 204"
+  },
+  robootika: {
+    nimi: "Robootikaring",
+    silt: "Tehnoloogia",
+    kirjeldus: "Ehita ja programmeeri roboteid. Lahendame koos praktilisi ülesandeid ning õpime katsetades.",
+    aeg: "Kolmapäeval kell 16.00 · ruum 112"
+  },
+  teater: {
+    nimi: "Teatriring",
+    silt: "Lava",
+    kirjeldus: "Harjuta lavalist eneseväljendust, improvisatsiooni ja koostööd ning astu soovi korral publiku ette.",
+    aeg: "Neljapäeval kell 15.30 · aula"
+  }
+};
+
+const detailvaade = document.querySelector("#detailvaade");
+const ringiValik = document.querySelector("#ring-valik");
+const teade = document.querySelector("#teade");
+let aktiivneRing = "";
+
+document.querySelectorAll(".kaart__foto").forEach((foto) => {
+  foto.addEventListener("pointermove", (sundmus) => {
+    if (sundmus.pointerType !== "mouse" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const piirid = foto.getBoundingClientRect();
+    const x = (sundmus.clientX - piirid.left) / piirid.width - .5;
+    const y = (sundmus.clientY - piirid.top) / piirid.height - .5;
+    foto.style.setProperty("--move-x", `${-x * 12}px`);
+    foto.style.setProperty("--move-y", `${-y * 12}px`);
+  });
+  foto.addEventListener("pointerleave", () => {
+    foto.style.removeProperty("--move-x");
+    foto.style.removeProperty("--move-y");
+  });
+});
+
+document.querySelectorAll(".detaili-nupp").forEach((nupp) => {
+  nupp.addEventListener("click", () => {
+    aktiivneRing = nupp.dataset.ring;
+    const ring = ringid[aktiivneRing];
+    document.querySelector("#detail-silt").textContent = ring.silt;
+    document.querySelector("#detail-pealkiri").textContent = ring.nimi;
+    document.querySelector("#detail-kirjeldus").textContent = ring.kirjeldus;
+    document.querySelector("#detail-aeg").textContent = ring.aeg;
+    detailvaade.showModal();
+  });
+});
+
+document.querySelector("#sulge-detail").addEventListener("click", () => detailvaade.close());
+detailvaade.addEventListener("click", (sundmus) => {
+  if (sundmus.target === detailvaade) detailvaade.close();
+});
+document.querySelector("#vali-ring").addEventListener("click", () => {
+  ringiValik.value = aktiivneRing;
+  detailvaade.close();
+  document.querySelector("#registreeru").scrollIntoView({ behavior: "smooth" });
+  document.querySelector("#nimi").focus({ preventScroll: true });
+});
+
+document.querySelector("#registreerimisvorm").addEventListener("submit", (sundmus) => {
+  sundmus.preventDefault();
+  const vorm = sundmus.currentTarget;
+  if (!vorm.reportValidity()) return;
+
+  const avaldus = {
+    ring: ringid[ringiValik.value].nimi,
+    nimi: document.querySelector("#nimi").value.trim(),
+    email: document.querySelector("#email").value.trim(),
+    esitatud: new Date().toISOString()
+  };
+
+  try {
+    const avaldused = JSON.parse(localStorage.getItem("huviringide-avaldused") || "[]");
+    avaldused.push(avaldus);
+    localStorage.setItem("huviringide-avaldused", JSON.stringify(avaldused));
+    teade.textContent = `Aitäh, ${avaldus.nimi}! Avaldus ringi „${avaldus.ring}" salvestati selles seadmes.`;
+    vorm.reset();
+  } catch {
+    teade.textContent = "Avalduse salvestamine ebaõnnestus. Kontrolli, kas brauser lubab kohalikku salvestamist.";
+  }
+});
+</script>
+</body>
+</html>
